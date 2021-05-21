@@ -1,5 +1,5 @@
 # USO BÁSICO DO GIT:
------
+------
 ### Para ver a situação:
 git status
 
