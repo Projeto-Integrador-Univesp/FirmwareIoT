@@ -1,28 +1,40 @@
-# FirmwareIoT
 
-## Sobre:
+# Bem vindo ao projeto PI
+![GitHub repo size](https://img.shields.io/github/repo-size/Projeto-Integrador-Univesp/FirmwareIoT)
+![GitHub](https://img.shields.io/github/license/Projeto-Integrador-Univesp/FirmwareIoT)
+![GitHub language count](https://img.shields.io/github/languages/count/Projeto-Integrador-Univesp/FirmwareIoT)
+![GitHub top language](https://img.shields.io/github/languages/top/Projeto-Integrador-Univesp/FirmwareIoT)
 
-Firmware para leitura do sensor e comunicação com API Web. 
+**Objetivo do PI**
+Desenvolver uma ferramenta para monitorar a coluna d'agua em rios para evitar extravase.
+Assim quando a coluna d'agua do rio chegar ao limite será avisado as autoridades (Defesa cívil, etc) e a população.
+Também está previsto um sistema de cadastro para a população que receberá as notificações via Push notification.
 
-O projeto visa detectar inundações em pontos específicos para alertar a população, evitando as intercorrências indesejáveis. Para  tanto articula dois módulos principais:
+**Acesse o site para testes:**
+https://enchente.azurewebsites.net/
 
-1) um dispositivo de hardware munido de um sensor adequado e conectividade com a internet, e 
-2) uma API Web.
 
-Pretende-se desenvolver um portótipo que utiliza alguma plataforma de prototipagem eletrônica de hardware livre, por exemplo o Arduino. 
+--------------
+### Software em 2 camadas
+1. IoT 
+1.1 Hardware IoT
+1.2 Firmware IoT
+2. Web 
+2.1 Web API [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]
+2.2 Wb App  [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]
 
-## Prototipações:
+------------
 
-1) Primeiro teste: Arduino + Ethernet Shield (pasta ARDUINO-ETHERNET)
-Descrição: Esse protótipo visa apenas a efetivação da conexão com a internet e a comunicação de um PC com o Arduino via internet.
-Resultado:
-Problemas:
+##### Hardware IoT
+Desenvolvido com as tecnologias:
+- C++
 
-2)
-
-3)
-
-4)
+##### Firmware IoT
+Desenvolvido com as tecnologias:
+- Arduino
+- Shield Ethernet
+- Sensor Ultrassônico HC-SR04
+------------
 
 
 
