@@ -25,16 +25,46 @@ String HTTP_METHOD = "GET";
 char   HOST_NAME[] = "enchente.azurewebsites.net";
 String PATH_NAME   = "/api/RecebeDados/Enchente/";
 String queryString = "?enchente=";
+String nivelAgua = "&nivelAgua=";
 
 char server[] = "webhook.site";  // also change the Host line in httpRequest()
 //IPAddress server(64,131,82,241);
 
 unsigned long lastConnectionTime = 0;           // last time you connected to the server, in milliseconds
 const unsigned long postingInterval = 10*1000;  // delay between updates, in milliseconds
-int cont = 2;
 
+//Nivel de água
+int cont = 8;
+int cont2 = 2;
+
+//Display de 7 segmentos decoder
+char disp[10] ={0b00111111, 0b00000110, 0b01011011, 0b01001111, 0b01100110, 0b01101101, 0b01111101, 0b00000111, 0b01111111, 0b01101111};
+
+//Sensor Ultrassonico
+int echo = A1;
+int trigger = A0;
+
+void SetSeg(int valor){
+  int v = disp[valor%10];
+  for (int c = 2; c <9; c++){
+    digitalWrite(c, v % 2);   
+    v=v>>1;    
+  }  
+}
 
 void setup() {
+
+  //Display de 7 segmentos
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  SetSeg(8);
+
+  
   // You can use Ethernet.init(pin) to configure the CS pin
   Ethernet.init(10);  // Most Arduino shields
   
@@ -70,27 +100,55 @@ void setup() {
   }
   // give the Ethernet shield a second to initialize:
   delay(10000);
+  pinMode(echo,INPUT);
+  pinMode(trigger,OUTPUT);
+  digitalWrite(trigger,LOW);
+  delayMicroseconds(10);
 }
 
+String Str;
+float tempo; // para armazenar o tempo de ida e volta do sinal em microsegundos
+float distancia_cm; // para armazenar a distância em centímetros
+
 void loop() {
+  //leitura da distancia
+  // disparar pulso ultrassônico
+  digitalWrite(trigger, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigger, LOW);
+
+  // medir tempo de ida e volta do pulso ultrassônico
+  tempo = pulseIn(echo, HIGH);
+
+  // calcular as distâncias em centímetros e polegadas
+  distancia_cm = tempo / 29.4 / 2;
+  cont = (int) distancia_cm /10;
+  SetSeg(cont); // Atualiza o valor no Display de 7 segmentos 
+  //if (cont2>9) cont2 = 0;
   
   if(client.connect(HOST_NAME, HTTP_PORT)) {
         // if connected:
         Serial.println("Connected to server");
         // make a HTTP request:
         // send HTTP header
-        if(cont<3){
-          Serial.println("GET " + PATH_NAME + queryString + "True" + " HTTP/1.1 " + (String) cont);
-          client.println("GET " + PATH_NAME + queryString + "True" + " HTTP/1.1");
+        if(cont<2){ // 2 metros é a altura do poste em relação ao solo
+          Str = "True";
+          //Serial.println("GET " + PATH_NAME + queryString + (String)(cont<2) +  nivelAgua +  (String) cont + " HTTP/1.1");
+          //client.println("GET " + PATH_NAME + queryString + "True" +  nivelAgua +  (String) cont + " HTTP/1.1");
         }
         else{
-          Serial.println("GET " + PATH_NAME + queryString + "False" + " HTTP/1.1 "  + (String) cont);
-          client.println("GET " + PATH_NAME + queryString + "False" + " HTTP/1.1");
+          Str = "False";
+          //Serial.println("GET " + PATH_NAME + queryString + (String)(cont<2) + nivelAgua + (String) distancia_cm + " HTTP/1.1");
+          //client.println("GET " + PATH_NAME + queryString + "False" + nivelAgua + (String) cont + " HTTP/1.1");
         }
+        Serial.println("display 7SEG " + (String) cont + " ");
+        Serial.println("GET " + PATH_NAME + queryString + Str + nivelAgua + (String) distancia_cm + " HTTP/1.1");
+        client.println("GET " + PATH_NAME + queryString + Str + nivelAgua + (String) distancia_cm + " HTTP/1.1");
+        
         client.println("Host: " + String(HOST_NAME));
         client.println("Connection: close");
         client.println(); // end HTTP header
-    
+      
         while(client.connected()) {
           if(client.available()){
             // read an incoming byte from the server and print it to serial monitor:
@@ -101,14 +159,16 @@ void loop() {
     
         // the server's disconnected, stop the client:
         client.stop();
-        Serial.println();
-        Serial.println("disconnected");
+        //Serial.println();
+        //Serial.println("disconnected");
       }else {// if not connected:
         Serial.println("connection failed");
   }
 
-  cont = random(0, 10);
-  delay(60000);
+  cont = random(1, 5);
+  Serial.println("esperar 6 segundos");
+  delay(6000);
+  
   /*
   // if there's incoming data from the net connection.
   // send it out the serial port.  This is for debugging
