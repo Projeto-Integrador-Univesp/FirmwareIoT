@@ -16,20 +16,20 @@ https://enchente.azurewebsites.net/
 
 --------------
 ### Software em 2 camadas
-1. IoT 
-1.1 Hardware IoT
-1.2 Firmware IoT
-2. Web 
-2.1 Web API [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]
-2.2 Wb App  [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]
+1. IoT  
+  * Hardware IoT  
+  * Firmware IoT  
+1. Web  
+  * Web API [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]  
+  * Web App  [[clique aqui](https://github.com/Projeto-Integrador-Univesp/PlataformaWeb "clique aqui")]  
 
 ------------
 
-##### Hardware IoT
+##### Firmware IoT
 Desenvolvido com as tecnologias:
 - C++
 
-##### Firmware IoT
+##### Hardware IoT
 Desenvolvido com as tecnologias:
 - Arduino
 - Shield Ethernet
